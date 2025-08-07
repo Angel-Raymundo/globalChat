@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="header-content">
+        <div class="back-button">
+          <i class="fas fa-arrow-left"></i>
+        </div>
+        <div class="header-info">
+          <h1>Chat App</h1>
+          <div class="status">En línea</div>
+        </div>
+        <div class="header-actions">
+          <i class="fas fa-video"></i>
+          <i class="fas fa-phone"></i>
+          <i class="fas fa-ellipsis-v"></i>
+        </div>
+      </div>
+    </div>
+    
+    <div class="user-form-container" id="usuarioDiv">
+      <div class="user-form">
+        <div class="app-icon">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <h2>Bienvenido al Chat</h2>
+        <p>Ingresa tu nombre para comenzar</p>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="nombreUsuario" placeholder="Tu nombre" autocomplete="off" required />
+        </div>
+        <button id="guardarNombre">Iniciar Chat</button>
+      </div>
+    </div>
+    
+    <div class="messages-container" id="respuestas">
+      <div class="date-separator">
+        <span>Hoy</span>
+      </div>
+    </div>
+    
+	<div class="chat-input-container" id="formulario">
+		<div class="input-actions">
+		  <input type="file" id="file-input" accept="image/*,video/*,audio/*" style="display: none;">
+		  <i class="fas fa-plus-circle" id="attach-button"></i>
+		  <button class="emoji-button" id="emoji-button">
+		    <i class="far fa-smile"></i>
+		  </button>
+		</div>
+	   <div class="message-input">
+	     <input type="text" id="mensaje" placeholder="Escribe un mensaje..." autocomplete="off" required />
+	   </div>
+	   <div class="send-actions">
+	     <i class="fas fa-microphone"></i>
+	     <button type="submit" id="send-button">
+	       <i class="fas fa-paper-plane"></i>
+	     </button>
+	   </div>
+	 </div>
+	 
+	 <div class="emoji-picker-container" id="emoji-picker">
+	   <div class="emoji-picker">
+	     <div class="emoji-category">
+	       <span>Sonrisas</span>
+	       <div class="emoji-grid">
+	         <button class="emoji" data-emoji="😀">😀</button>
+	         <button class="emoji" data-emoji="😁">😁</button>
+	         <button class="emoji" data-emoji="😂">😂</button>
+	         <button class="emoji" data-emoji="🤣">🤣</button>
+	         <button class="emoji" data-emoji="😃">😃</button>
+	         <button class="emoji" data-emoji="😄">😄</button>
+	         <button class="emoji" data-emoji="😅">😅</button>
+	         <button class="emoji" data-emoji="😆">😆</button>
+	         <button class="emoji" data-emoji="😉">😉</button>
+	         <button class="emoji" data-emoji="😊">😊</button>
+	         <button class="emoji" data-emoji="😋">😋</button>
+	         <button class="emoji" data-emoji="😎">😎</button>
+	       </div>
+	     </div>
+	     <div class="emoji-category">
+	       <span>Corazones</span>
+	       <div class="emoji-grid">
+	         <button class="emoji" data-emoji="❤️">❤️</button>
+	         <button class="emoji" data-emoji="🧡">🧡</button>
+	         <button class="emoji" data-emoji="💛">💛</button>
+	         <button class="emoji" data-emoji="💚">💚</button>
+	         <button class="emoji" data-emoji="💙">💙</button>
+	         <button class="emoji" data-emoji="💜">💜</button>
+	         <button class="emoji" data-emoji="🖤">🖤</button>
+	         <button class="emoji" data-emoji="💔">💔</button>
+	         <button class="emoji" data-emoji="❣️">❣️</button>
+	         <button class="emoji" data-emoji="💕">💕</button>
+	         <button class="emoji" data-emoji="💞">💞</button>
+	         <button class="emoji" data-emoji="💓">💓</button>
+	       </div>
+	     </div>
+	     <div class="emoji-category">
+	       <span>Manos</span>
+	       <div class="emoji-grid">
+	         <button class="emoji" data-emoji="👍">👍</button>
+	         <button class="emoji" data-emoji="👎">👎</button>
+	         <button class="emoji" data-emoji="👌">👌</button>
+	         <button class="emoji" data-emoji="✌️">✌️</button>
+	         <button class="emoji" data-emoji="🤞">🤞</button>
+	         <button class="emoji" data-emoji="🤟">🤟</button>
+	         <button class="emoji" data-emoji="🤘">🤘</button>
+	         <button class="emoji" data-emoji="🤙">🤙</button>
+	         <button class="emoji" data-emoji="👋">👋</button>
+	         <button class="emoji" data-emoji="🤚">🤚</button>
+	         <button class="emoji" data-emoji="🖐️">🖐️</button>
+	         <button class="emoji" data-emoji="✋">✋</button>
+	       </div>
+	     </div>
+	   </div>
+	 </div>
+    
+    <div class="change-name-container" id="cambiarNombre">
+      <button id="changeNameBtn">Cambiar nombre</button>
+    </div>
+  </div>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const usuarioDiv = document.getElementById("usuarioDiv");
+        const formulario = document.getElementById("formulario");
+        const nombreInput = document.getElementById("nombreUsuario");
+        const cambiarNombreBtn = document.getElementById("cambiarNombre");
+        const respuestasDiv = document.getElementById("respuestas");
+        const mensajeInput = document.getElementById("mensaje");
+        const sendButton = document.getElementById("send-button");
+        
+        let usuario = localStorage.getItem("usuario");
+        
+        const initUI = () => {
+          if (usuario) {
+            formulario.style.display = "flex";
+            respuestasDiv.style.display = "block";
+            usuarioDiv.style.display = "none";
+            cambiarNombreBtn.style.display = "block";
+            
+            document.querySelector('.header-info h1').textContent = `Chat como ${usuario}`;
+          }
+        };
+        
+        const handleError = (error) => {
+          console.error("Error:", error);
+          alert("Ocurrió un error. Por favor intenta nuevamente.");
+        };
+        
+        document.getElementById("guardarNombre").addEventListener("click", () => {
+          const nombre = nombreInput.value.trim();
+          if (!nombre) return alert("Debes ingresar un nombre");
+          localStorage.setItem("usuario", nombre);
+          location.reload();
+        });
+        
+        document.getElementById("changeNameBtn").addEventListener("click", () => {
+          localStorage.removeItem("usuario");
+          location.reload();
+        });
+        
+        const enviarMensaje = async () => {
+          const mensaje = mensajeInput.value.trim();
+          if (!mensaje || !usuario) return;
+          
+          mensajeInput.value = "";
+          
+          try {
+            await fetch("/procesar", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: `usuario=${encodeURIComponent(usuario)}&mensaje=${encodeURIComponent(mensaje)}`
+            });
+          } catch (error) {
+            handleError(error);
+          }
+        };
+        
+        sendButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          enviarMensaje();
+        });
+        
+        mensajeInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            enviarMensaje();
+          }
+        });
+        
+        const socket = new WebSocket(`ws://${location.host}/ws`);
+
+        socket.onopen = () => console.log("Conexión WebSocket establecida");
+        socket.onclose = () => console.log("Conexión WebSocket cerrada");
+        socket.onerror = handleError;
+
+        socket.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.tipo === "nuevo") {
+              agregarMensaje(data.usuario, data.mensaje, data.usuario === usuario);
+            } else if (data.tipo === "eliminar") {
+              eliminarMensajeUI(data.usuario, data.mensaje);
+            }
+          } catch (error) {
+            console.error("Error procesando mensaje WebSocket:", error);
+          }
+        };
+
+        const cargarMensajes = async () => {
+          try {
+            const response = await fetch("/mensajes");
+            if (!response.ok) throw new Error("Error al cargar mensajes");
+            const mensajes = await response.json();
+            mensajes.forEach(m => agregarMensaje(m.usuario, m.mensaje, m.usuario === usuario));
+          } catch (error) {
+            handleError(error);
+          }
+        };
+
+		const agregarMensaje = (sender, content, isSent) => {
+		  const msgElement = document.createElement('div');
+		  msgElement.classList.add('msg');
+		  msgElement.classList.add(isSent ? 'sent' : 'received');
+		  
+		  const now = new Date();
+		  const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+		  
+		  let messageContent;
+		  if (content.startsWith('IMG:')) {
+		    const parts = content.split(':');
+		    const base64 = parts[1];
+		    const mimeType = parts[2];
+		    messageContent = `<img src="data:${mimeType};base64,${base64}" class="message-media" />`;
+		  } else if (content.startsWith('VID:')) {
+		    const parts = content.split(':');
+		    const base64 = parts[1];
+		    const mimeType = parts[2];
+		    messageContent = `
+		      <video controls class="message-media">
+		        <source src="data:${mimeType};base64,${base64}" type="${mimeType}">
+		        Tu navegador no soporta videos HTML5
+		      </video>
+		    `;
+		  } else if (content.startsWith('AUD:')) {
+		    const parts = content.split(':');
+		    const base64 = parts[1];
+		    const mimeType = parts[2];
+		    messageContent = `
+		      <audio controls class="message-media">
+		        <source src="data:${mimeType};base64,${base64}" type="${mimeType}">
+		        Tu navegador no soporta audio HTML5
+		      </audio>
+		    `;
+		  } else if (content.startsWith('FILE:')) {
+		    const parts = content.split(':');
+		    const fileName = parts[1];
+		    const fileType = parts[2];
+		    messageContent = `<div class="file-message"><i class="fas fa-file"></i> ${escapeHtml(fileName)} (${fileType})</div>`;
+		  } else {
+		    messageContent = escapeHtml(content);
+		  }
+		  
+		  msgElement.innerHTML = `
+		    ${!isSent ? `<div class="sender">${escapeHtml(sender)}</div>` : ''}
+		    <div class="content">${messageContent}</div>
+		    <div class="timestamp">${time}</div>
+		  `;
+		  
+		  respuestasDiv.appendChild(msgElement);
+		  
+		  respuestasDiv.scrollTop = respuestasDiv.scrollHeight;
+		};
+
+        const eliminarMensajeUI = (usuario, mensaje) => {
+          console.log(`Eliminar mensaje: ${usuario} - ${mensaje}`);
+        };
+        
+        const escapeHtml = (text) => {
+          const div = document.createElement('div');
+          div.textContent = text;
+          return div.innerHTML;
+        };
+        
+        initUI();
+        if (usuario) {
+          cargarMensajes();
+        }
+		
+		       const emojiButton = document.getElementById('emoji-button');
+		       const emojiPicker = document.getElementById('emoji-picker');
+		       const messageInput = document.getElementById('mensaje');
+		       emojiButton.addEventListener('click', (e) => {
+		         e.stopPropagation();
+		         emojiPicker.style.display = emojiPicker.style.display === 'block' ? 'none' : 'block';
+		       });
+		       
+		       document.addEventListener('click', () => {
+		         emojiPicker.style.display = 'none';
+		       });
+		       
+		       emojiPicker.addEventListener('click', (e) => {
+		         e.stopPropagation();
+		       });
+		       
+		       document.querySelectorAll('.emoji').forEach(emojiBtn => {
+		         emojiBtn.addEventListener('click', () => {
+		           const emoji = emojiBtn.getAttribute('data-emoji');
+		           messageInput.value += emoji;
+		           messageInput.focus();
+		         });
+		       });
+			   
+			   const attachButton = document.getElementById('attach-button');
+			   const fileInput = document.getElementById('file-input');
+
+			   attachButton.addEventListener('click', () => {
+			     fileInput.click();
+			   });
+
+			   fileInput.addEventListener('change', async (e) => {
+			     const file = e.target.files[0];
+			     if (!file) return;
+
+			     if (file.size > 5 * 1024 * 1024) {
+			       alert('El archivo es demasiado grande (máximo 5MB)');
+			       return;
+			     }
+
+			     const formData = new FormData();
+			     formData.append('usuario', usuario);
+			     formData.append('archivo', file);
+
+			     try {
+			       const response = await fetch("/procesar", {
+			         method: "POST",
+			         body: formData
+			       });
+
+			       if (!response.ok) throw new Error('Error al subir el archivo');
+			       
+			       fileInput.value = '';
+			     } catch (error) {
+			       console.error('Error:', error);
+			       alert('Error al enviar el archivo');
+			     }
+			   });
+      });
+    </script>
+
+</body>
+</html>
